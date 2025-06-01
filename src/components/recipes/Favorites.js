@@ -3,7 +3,7 @@ import RecipeGrid from './RecipeGrid';
 // import { getUserIdFromToken } from '../../utility/AuthUtil';
 import { useNavigate } from 'react-router-dom';
 
-function MyRecipes() {
+function Favorites() {
   const navigate = useNavigate();
   const userId = null; //getUserIdFromToken();
   
@@ -14,7 +14,7 @@ function MyRecipes() {
 
   return (
     <div
-      className="my-recipes-wrapper"
+      className="favorites"
       style={{
         width: '100%',
         height: '100dvh',
@@ -22,12 +22,12 @@ function MyRecipes() {
       }}
     >
       <Header />
-      <div className="my-recipes-content">
-        My recipes
+      <div className="favorites-content">
+        Favorites
         <RecipeGrid isMine/>
       </div>
     </div>
   );
 }
 
-export default MyRecipes;
+export default Favorites;
