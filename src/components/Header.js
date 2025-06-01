@@ -7,6 +7,7 @@ function Header() {
   const handleLogoClick = () => { navigate('/'); };
   const handleCreateRecipeClick = () => { navigate('/create-recipe'); };
   const handleMyRecipesClick = () => { navigate('/my-recipes'); };
+  const handleFavoritesClick = () => { navigate('/favorites'); };
   const handleProfileClick = () => { navigate('/profile'); };
 
   return (
@@ -27,6 +28,10 @@ function Header() {
         <i
           className="header-icon fa-solid fa-circle-plus"
           onClick={handleCreateRecipeClick}>
+        </i>
+        <i
+          class="header-icon fa-solid fa-heart"
+          onClick={handleFavoritesClick}>
         </i>
         <i
           className="profile-icon fa-solid fa-circle-user"

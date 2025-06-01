@@ -3,8 +3,8 @@ import { useState } from 'react';
 import Select from 'react-select';
 
 const options = [
-  {value: 'Favorited_Desc', label: (<>Favorited <i className="fa-solid fa-arrow-down"></i></>)},
-  {value: 'Favorited_Asc', label: (<>Favorited <i className="fa-solid fa-arrow-up"></i></>)},
+  {value: 'Popular_Desc', label: (<>Popular <i className="fa-solid fa-arrow-down"></i></>)},
+  {value: 'Popular_Asc', label: (<>Popular <i className="fa-solid fa-arrow-up"></i></>)},
   {value: 'Date_Desc', label: (<>Date Posted <i className="fa-solid fa-arrow-down"></i></>)},
   {value: 'Date_Asc', label: (<>Date Posted <i className="fa-solid fa-arrow-up"></i></>)}
 ];
