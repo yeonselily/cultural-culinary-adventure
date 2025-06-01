@@ -6,6 +6,7 @@ function Header() {
   const navigate = useNavigate();
   const handleLogoClick = () => { navigate('/'); };
   const handleCreateRecipeClick = () => { navigate('/create-recipe'); };
+  const handleMyRecipesClick = () => { navigate('/my-recipes'); };
 
   return (
     <div className="header">
@@ -19,9 +20,7 @@ function Header() {
       </div>
 
       <div className="header-right">
-        <h1
-          className="my-recipes"
-        >
+        <h1 className="my-recipes" onClick={handleMyRecipesClick}>
           My Recipes
         </h1>
         <i
