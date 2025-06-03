@@ -32,7 +32,7 @@ function Ingredients ({ ingredients, setIngredients }) {
       borderColor: '#ccc',
       boxShadow: 'none',
       borderRadius: '7px',
-      display: 'flex',          // important for layout inside control
+      display: 'flex',
       alignItems: 'center',
       '&:hover': {
         boxShadow: '0 0 0 2px #a40000;',

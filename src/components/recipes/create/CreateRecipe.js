@@ -14,6 +14,7 @@ import KidFriendly from './fields/KidFriendly';
 import Countries from '../../search/Countries';
 import States from '../../search/States';
 import Ingredients from './fields/Ingredients';
+import Substitutions from './fields/Substitutions';
 import RecipeSteps from './fields/RecipeSteps';
 
 function CreateRecipe() {
@@ -29,6 +30,7 @@ function CreateRecipe() {
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [selectedStates, setSelectedStates] = useState([]);
   const [ingredients, setIngredients] = useState([{ name: '', quantity: '', unit: '' }]);
+  const [substitutions, setSubstitutions] = useState([{ ogIngr: '', subIngr: '', ogAmt: '', subAmt: '' }]);
   const [image, setImage] = useState(null);
   const [steps, setSteps] = useState([""]);
   const cleanedSteps = steps.filter(step => step.trim() !== "");
@@ -126,6 +128,15 @@ function CreateRecipe() {
           <FormGroup
             label="Ingredients" Component={Ingredients}
             componentProps={{ingredients: ingredients, setIngredients: setIngredients}}
+          />
+
+          <FormGroup
+            label="Substitutions" Component={Substitutions}
+            componentProps={{
+                ingredients: ingredients,
+                substitutions: substitutions,
+                setSubstitutions: setSubstitutions
+            }}
           />
 
           <FormGroup

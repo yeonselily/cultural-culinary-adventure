@@ -1,0 +1,54 @@
+.substitutions {
+  width: 100%;
+}
+
+.substitutions-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.substitutions-row input:focus {
+  outline-color: #a40000;
+}
+
+.sub-ingredient {
+  width: 32%;
+  min-width: 150px;
+}
+
+.ratio {
+  margin-left: 10px;
+}
+
+.ratio input {
+  width: 27px;
+  min-width: 27px;
+}
+
+.colon {
+  margin: 5px;
+  font-weight: bold;
+}
+
+.delete-substitution-btn button {
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 3px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  appearance: textfield;
+}
