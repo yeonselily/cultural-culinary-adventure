@@ -13,7 +13,7 @@ function Substitutions ({ ingredients, substitutions, setSubstitutions }) {
       ...provided,
       minHeight: '29px',
       height: '29px',
-      minWidth: '100%',
+      minWidth: '100px',
       width: '100%',
       fontSize: '14px',
       borderColor: '#ccc',
