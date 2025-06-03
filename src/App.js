@@ -5,19 +5,12 @@ import CreateRecipe from './components/recipes/create/CreateRecipe';
 import MyRecipes from './components/recipes/MyRecipes';
 import Favorites from './components/recipes/Favorites';
 import Profile from './components/users/Profile';
+import CustomerList from './CustomerList';
 
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/create-recipe" element={<CreateRecipe />} />
-          <Route path="/my-recipes" element={<MyRecipes />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </Router>
+      <CustomerList />
     </div>
   );
 }
