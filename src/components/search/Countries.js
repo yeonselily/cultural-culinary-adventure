@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import countries from 'world-countries';
 import '../../styles/search/Countries.css';
 
 export default function Countries({ selectedCountries, setSelectedCountries }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const [countries, setCountries] = useState([]);
+
+  // Fetch country names from backend
+  useEffect(() => {
+    fetch('https://students.washington.edu/ayleenpt/cultural-culinary-adventure/select_countries.php')
+      .then(res => res.json())
+      .then(data => setCountries(data))
+      .catch(err => console.error('Error fetching countries:', err));
+  }, []);
 
   const toggleVisibility = () => setIsOpen(!isOpen);
 
-  const handleCheckboxChange = (cca3) => {
+  const handleCheckboxChange = (name) => {
     setSelectedCountries((prev) =>
-      prev.includes(cca3)
-        ? prev.filter((code) => code !== cca3)
-        : [...prev, cca3]
+      prev.includes(name)
+        ? prev.filter((n) => n !== name)
+        : [...prev, name]
     );
   };
 
-  const filteredCountries = countries.filter((country) =>
-    country.name.common.toLowerCase().includes(search.toLowerCase())
+  const filteredCountries = countries.filter((name) =>
+    name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -30,24 +38,20 @@ export default function Countries({ selectedCountries, setSelectedCountries }) {
 
       {selectedCountries.length > 0 && (
         <div className="selected-tags">
-          {selectedCountries.map((code) => {
-            const country = countries.find((c) => c.cca3 === code);
-            return (
-              <div key={code} className="tag">
-                {country?.name.common}
-                <button
-                  className="remove-tag"
-                  onClick={() => handleCheckboxChange(code)}
-                  aria-label={`Remove ${country?.name.common}`}
-                >
-                  ×
-                </button>
-              </div>
-            );
-          })}
+          {selectedCountries.map((name) => (
+            <div key={name} className="tag">
+              {name}
+              <button
+                className="remove-tag"
+                onClick={() => handleCheckboxChange(name)}
+                aria-label={`Remove ${name}`}
+              >
+                ×
+              </button>
+            </div>
+          ))}
         </div>
       )}
-
 
       {isOpen && (
         <div className="dropdown">
@@ -59,15 +63,15 @@ export default function Countries({ selectedCountries, setSelectedCountries }) {
             className="search-input"
           />
           <div className="list">
-            {filteredCountries.map((country) => (
-              <div key={country.cca3} className="list-item">
+            {filteredCountries.map((name) => (
+              <div key={name} className="list-item">
                 <input
                   type="checkbox"
-                  checked={selectedCountries.includes(country.cca3)}
-                  onChange={() => handleCheckboxChange(country.cca3)}
-                  id={country.cca3}
+                  checked={selectedCountries.includes(name)}
+                  onChange={() => handleCheckboxChange(name)}
+                  id={`country-${name}`}
                 />
-                <label className="country-label" htmlFor={country.cca3}>{country.name.common}</label>
+                <label className="country-label" htmlFor={`country-${name}`}>{name}</label>
               </div>
             ))}
           </div>

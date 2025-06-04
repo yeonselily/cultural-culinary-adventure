@@ -54,7 +54,7 @@ function Filters() {
           selectedCountries={selectedCountries}
           setSelectedCountries={setSelectedCountries}
         />
-        {selectedCountries.includes("USA") && (
+        {selectedCountries.includes("United States") && (
           <States
             selectedStates={selectedStates}
             setSelectedStates={setSelectedStates}

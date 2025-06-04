@@ -1,11 +1,13 @@
-import '../../../../styles/recipes/create/fields/Ingredients.css'
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
+import AsyncCreatableSelect from 'react-select/async-creatable';
+import '../../../../styles/recipes/create/fields/Ingredients.css';
 
-const options = [
+const UNIT_OPTIONS = [
   { value: '-', label: '-' },
   { value: 'tsp', label: 'tsp' },
-  { value: 'tbsp', label: 'tsbp' },
-  { value: 'cup', label: 'oz' },
+  { value: 'tbsp', label: 'tbsp' },
+  { value: 'cup', label: 'cup' },
   { value: 'g', label: 'g' },
   { value: 'ml', label: 'ml' },
   { value: 'lb', label: 'lb' },
@@ -14,43 +16,34 @@ const options = [
   { value: 'pinch', label: 'pinch' }
 ];
 
-function Ingredients ({ ingredients, setIngredients }) {
+const loadOptions = async (inputValue) => {
+  const response = await fetch(`https://students.washington.edu/ayleenpt/cultural-culinary-adventure/select_ingredients.php?q=${encodeURIComponent(inputValue)}`);
+  const data = await response.json();
+  return data;
+};
 
-  const customStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? '#a40000' : 'white',
-      color: state.isFocused ? 'white' : 'black',
-    }),
-    control: (provided) => ({
-      ...provided,
-      minHeight: '29px',
-      height: '29px',
-      minWidth: '85px',
-      width: '85px',
-      fontSize: '14px',
-      borderColor: '#ccc',
-      boxShadow: 'none',
-      borderRadius: '7px',
-      display: 'flex',
-      alignItems: 'center',
-      '&:hover': {
-        boxShadow: '0 0 0 2px #a40000;',
-      },
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      padding: '0 0 10px 0',
-      height: '29px',
-    }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: '29px',
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      padding: '4px',
-    }),
+function Ingredients({ ingredients, setIngredients }) {
+  const handleNameChange = async (selectedOption, index) => {
+    const newName = selectedOption?.value ?? '';
+    const newIngredients = [...ingredients];
+    newIngredients[index].name = newName;
+    setIngredients(newIngredients);
+
+    // Auto-add a new row if last was edited
+    if (index === ingredients.length - 1 && newName.trim() !== '') {
+      setIngredients([...newIngredients, { name: '', quantity: '', unit: '', isNew: false }]);
+    }
+
+    // Check if it's new and add to DB
+    const existing = await loadOptions(newName);
+    const match = existing.find(opt => opt.value.toLowerCase() === newName.toLowerCase());
+    if (!match) {
+      await fetch('https://students.washington.edu/ayleenpt/cultural-culinary-adventure/insert_ingredient.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ingredient_name: newName })
+      });
+    }
   };
 
   return (
@@ -58,24 +51,40 @@ function Ingredients ({ ingredients, setIngredients }) {
       {ingredients.map((ingredient, index) => (
         <div key={index} className="ingredient-row">
           <div className="ingredient-name">
-            <input
-              type="text"
-              placeholder="Ingredient name"
-              value={ingredient.name}
-              onChange={(e) => {
+            <AsyncCreatableSelect
+              cacheOptions
+              defaultOptions
+              loadOptions={loadOptions}
+              value={ingredient.name ? { label: ingredient.name, value: ingredient.name } : null}
+              onChange={(option) => {
                 const newIngredients = [...ingredients];
-                newIngredients[index].name = e.target.value;
+                newIngredients[index] = {
+                  ...newIngredients[index],
+                  name: option.value,
+                  isNew: false // selected from DB
+                };
                 setIngredients(newIngredients);
 
-                if (
-                  index === ingredients.length - 1 &&
-                  e.target.value.trim() !== ''
-                ) {
-                  setIngredients([...newIngredients, { name: '', quantity: '', unit: '' }]);
+                if (index === ingredients.length - 1 && option.value.trim() !== '') {
+                  setIngredients([...newIngredients, { name: '', quantity: '', unit: '', isNew: false }]);
                 }
               }}
-              required={index === 0}
-            />
+              onCreateOption={(inputValue) => {
+                const newIngredients = [...ingredients];
+                newIngredients[index] = {
+                  ...newIngredients[index],
+                  name: inputValue,
+                  isNew: true
+                };
+                setIngredients(newIngredients);
+
+                if (index === ingredients.length - 1 && inputValue.trim() !== '') {
+                  setIngredients([...newIngredients, { name: '', quantity: '', unit: '', isNew: false }]);
+                }
+              }}
+              placeholder="Ingredient name"
+              styles={{ container: base => ({ ...base, minWidth: '150px' }) }}
+              />
           </div>
 
           <div className="ingredient-quantity">
@@ -93,14 +102,23 @@ function Ingredients ({ ingredients, setIngredients }) {
           </div>
 
           <Select
-            options={options}
-            value={options.find(opt => opt.value === ingredients[index].unit)}
+            options={UNIT_OPTIONS}
+            value={UNIT_OPTIONS.find(opt => opt.value === ingredient.unit)}
             onChange={(selectedOption) => {
               const newIngredients = [...ingredients];
               newIngredients[index].unit = selectedOption.value;
               setIngredients(newIngredients);
             }}
-            styles={customStyles}
+            styles={{
+              control: (provided) => ({
+                ...provided,
+                minHeight: '29px',
+                height: '29px',
+                minWidth: '85px',
+                fontSize: '14px',
+                borderRadius: '7px',
+              }),
+            }}
             isSearchable={false}
             placeholder="Unit"
           />
@@ -113,7 +131,6 @@ function Ingredients ({ ingredients, setIngredients }) {
                   const newIngredients = ingredients.filter((_, i) => i !== index);
                   setIngredients(newIngredients);
                 }}
-                title="Delete ingredient"
               >
                 ×
               </button>

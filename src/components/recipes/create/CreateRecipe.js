@@ -29,8 +29,8 @@ function CreateRecipe() {
   const [kidFriendly, setKidFriendly] = useState('');
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [selectedStates, setSelectedStates] = useState([]);
-  const [ingredients, setIngredients] = useState([{ name: '', quantity: '', unit: '' }]);
-  const [substitutions, setSubstitutions] = useState([{ ogIngr: '', subIngr: '', ogAmt: '', subAmt: '' }]);
+  const [ingredients, setIngredients] = useState([{ name: '', quantity: '', unit: '', isNew: false }]);
+  const [substitutions, setSubstitutions] = useState([{ ogIngr: '', subIngr: '', ogAmt: '', subAmt: '', isNew: false }]);
   const [image, setImage] = useState(null);
   const [steps, setSteps] = useState([""]);
   const cleanedSteps = steps.filter(step => step.trim() !== "");

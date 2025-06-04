@@ -1,8 +1,16 @@
-import '../../../../styles/recipes/create/fields/Substitutions.css'
+import '../../../../styles/recipes/create/fields/Substitutions.css';
 import Select from 'react-select';
+import AsyncCreatableSelect from 'react-select/async-creatable';
 
-function Substitutions ({ ingredients, substitutions, setSubstitutions }) {
+const loadOptions = async (inputValue) => {
+  const response = await fetch(
+    `https://students.washington.edu/ayleenpt/cultural-culinary-adventure/select_ingredients.php?q=${encodeURIComponent(inputValue)}`
+  );
+  const data = await response.json();
+  return data;
+};
 
+function Substitutions({ ingredients, substitutions, setSubstitutions }) {
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -21,9 +29,6 @@ function Substitutions ({ ingredients, substitutions, setSubstitutions }) {
       borderRadius: '7px',
       display: 'flex',
       alignItems: 'center',
-      '&:hover': {
-        boxShadow: '0 0 0 2px #a40000;',
-      },
     }),
     valueContainer: (provided) => ({
       ...provided,
@@ -39,11 +44,10 @@ function Substitutions ({ ingredients, substitutions, setSubstitutions }) {
     }),
   };
 
-  const options = ingredients.map(ingredient => ({
+  const options = ingredients.map((ingredient) => ({
     value: ingredient.name,
-    label: ingredient.name
+    label: ingredient.name,
   }));
-
 
   return (
     <div className="substitutions">
@@ -51,11 +55,11 @@ function Substitutions ({ ingredients, substitutions, setSubstitutions }) {
         <div key={index} className="substitutions-row">
           <Select
             options={options}
-            value={options.find(opt => opt.value === substitutions[index].ogIngr)}
+            value={options.find((opt) => opt.value === substitution.ogIngr)}
             onChange={(selectedOption) => {
-              const newSubstitutions = [...substitutions];
-              newSubstitutions[index].ogIngr = selectedOption.value;
-              setSubstitutions(newSubstitutions);
+              const newSubs = [...substitutions];
+              newSubs[index].ogIngr = selectedOption.value;
+              setSubstitutions(newSubs);
             }}
             styles={customStyles}
             isSearchable={false}
@@ -63,23 +67,49 @@ function Substitutions ({ ingredients, substitutions, setSubstitutions }) {
           />
 
           <div className="sub-ingredient">
-            <input
-              type="text"
-              placeholder="Substitute Ingredient"
-              value={substitution.subIngr}
-              onChange={(e) => {
-                const newSubstitutions = [...substitutions];
-                newSubstitutions[index].subIngr = e.target.value;
-                setSubstitutions(newSubstitutions);
+            <AsyncCreatableSelect
+              cacheOptions
+              defaultOptions
+              loadOptions={loadOptions}
+              value={
+                substitution.subIngr
+                  ? { label: substitution.subIngr, value: substitution.subIngr }
+                  : null
+              }
+              onChange={(option) => {
+                const newSubs = [...substitutions];
+                newSubs[index].subIngr = option.value;
+                newSubs[index].isNew = false;
+                setSubstitutions(newSubs);
 
                 if (
                   index === substitutions.length - 1 &&
-                  e.target.value.trim() !== ''
+                  option.value.trim() !== ''
                 ) {
-                  setSubstitutions([...newSubstitutions, { ogIngr: '', subIngr: '', ogAmt: '', subAmt: '' }]);
+                  setSubstitutions([
+                    ...newSubs,
+                    { ogIngr: '', subIngr: '', ogAmt: '', subAmt: '', isNew: false },
+                  ]);
                 }
               }}
-              required={index === 0}
+              onCreateOption={(inputValue) => {
+                const newSubs = [...substitutions];
+                newSubs[index].subIngr = inputValue;
+                newSubs[index].isNew = true;
+                setSubstitutions(newSubs);
+
+                if (
+                  index === substitutions.length - 1 &&
+                  inputValue.trim() !== ''
+                ) {
+                  setSubstitutions([
+                    ...newSubs,
+                    { ogIngr: '', subIngr: '', ogAmt: '', subAmt: '', isNew: false },
+                  ]);
+                }
+              }}
+              placeholder="Substitute Ingredient"
+              styles={customStyles}
             />
           </div>
 
@@ -90,9 +120,9 @@ function Substitutions ({ ingredients, substitutions, setSubstitutions }) {
               placeholder="OG"
               value={substitution.ogAmt}
               onChange={(e) => {
-                const newSubstitutions = [...substitutions];
-                newSubstitutions[index].ogAmt = e.target.value;
-                setSubstitutions(newSubstitutions);
+                const newSubs = [...substitutions];
+                newSubs[index].ogAmt = e.target.value;
+                setSubstitutions(newSubs);
               }}
               required={index === 0}
             />
@@ -102,9 +132,9 @@ function Substitutions ({ ingredients, substitutions, setSubstitutions }) {
               placeholder="Sub"
               value={substitution.subAmt}
               onChange={(e) => {
-                const newSubstitutions = [...substitutions];
-                newSubstitutions[index].subAmt = e.target.value;
-                setSubstitutions(newSubstitutions);
+                const newSubs = [...substitutions];
+                newSubs[index].subAmt = e.target.value;
+                setSubstitutions(newSubs);
               }}
               required={index === 0}
             />
@@ -115,8 +145,8 @@ function Substitutions ({ ingredients, substitutions, setSubstitutions }) {
               <button
                 type="button"
                 onClick={() => {
-                  const newSubstitutions = substitutions.filter((_, i) => i !== index);
-                  setSubstitutions(newSubstitutions);
+                  const newSubs = substitutions.filter((_, i) => i !== index);
+                  setSubstitutions(newSubs);
                 }}
                 title="Delete substitution"
               >
