@@ -1,7 +1,7 @@
 {
   "name": "cultural-culinary-adventure",
   "version": "0.1.0",
-  "homepage": "https://ayleenpt.github.io/cultural-culinary-adventure",
+  "homepage": "https://yeonselily.github.io/cultural-culinary-adventure-frontend",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
