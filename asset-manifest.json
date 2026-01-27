@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/cultural-culinary-adventure-frontend/static/css/main.f517ee1f.css",
+    "main.js": "/cultural-culinary-adventure-frontend/static/js/main.eb08ce3e.js",
+    "static/js/453.ada4eed3.chunk.js": "/cultural-culinary-adventure-frontend/static/js/453.ada4eed3.chunk.js",
+    "index.html": "/cultural-culinary-adventure-frontend/index.html",
+    "main.f517ee1f.css.map": "/cultural-culinary-adventure-frontend/static/css/main.f517ee1f.css.map",
+    "main.eb08ce3e.js.map": "/cultural-culinary-adventure-frontend/static/js/main.eb08ce3e.js.map",
+    "453.ada4eed3.chunk.js.map": "/cultural-culinary-adventure-frontend/static/js/453.ada4eed3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f517ee1f.css",
+    "static/js/main.eb08ce3e.js"
+  ]
+}
