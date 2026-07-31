@@ -1,12 +1,12 @@
-# Cultural Culinary Adventure 🌍🍳
+# Cultural Culinary Adventure 
 
 A web application for exploring global cuisines, managing dietary restrictions, and discovering recipes tailored to your ingredients.
 
-## 🏗 Architecture
+## Architecture
 
 This project uses a decoupled architecture separating the user interface from the data processing logic.
 
-### 🎨 Frontend (Client)
+### Frontend (Client)
 Built with **React.js**, the frontend is responsible for the user experience.
 - **Location:** `/src`
 - **Key Features:**
@@ -14,7 +14,7 @@ Built with **React.js**, the frontend is responsible for the user experience.
   - User dashboard for allergies & fridge management
   - Client-side routing with `react-router-dom`
 
-### ⚙️ Backend (Server)
+### Backend (Server)
 Built with **PHP**, the backend serves as the API for the application.
 - **Location:** `/backend`
 - **Key Features:**
@@ -22,7 +22,7 @@ Built with **PHP**, the backend serves as the API for the application.
   - Handles database operations (CRUD)
   - Manages data validation and processing
 
-## 🚀 How to Run
+## How to Run
 
 1. **Start the Backend:** Ensure you have a PHP server (like XAMPP or MAMP) running and serving the `/backend` directory.
 2. **Start the Frontend:**
